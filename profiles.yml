@@ -1,0 +1,7 @@
+feature_launch_readouts:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: feature_launch.duckdb
+      threads: 4

@@ -1,0 +1,34 @@
+name: feature_launch_readouts
+version: "1.0.0"
+config-version: 2
+profile: feature_launch_readouts
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  feature_launch_readouts:
+    staging:
+      +materialized: view
+    feed_launch:
+      +materialized: table
+    badges:
+      +materialized: table
+    email_test:
+      +materialized: table
+
+# The study design lives here, in one place
+vars:
+  feed_launch: "2025-09-01"
+  placebo_launch: "2025-06-02"   # a date when nothing launched
+  window_weeks: 6                # weeks before and after a launch
+  prior_year_offset_days: 364    # 52 weeks, so weekdays line up
+  badge_launch: "2025-10-06"
+  badge_threshold: 100
+  badge_before_start: "2025-06-02"
+  badge_before_end: "2025-07-27"
+  badge_after_start: "2025-10-13"
+  badge_after_end: "2025-12-07"
