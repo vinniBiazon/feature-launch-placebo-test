@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: stg_members
+    columns:
+      - name: member_id
+        data_tests: [unique, not_null]
+      - name: joined_on
+        data_tests: [not_null]
+
+  - name: stg_weekly_activity
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [member_id, week_start]
+    columns:
+      - name: member_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_members')
+                field: member_id
+      - name: week_start
+        data_tests: [not_null]
+
+  - name: stg_badge_awards
+    columns:
+      - name: member_id
+        data_tests:
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_members')
+                field: member_id
+      - name: award_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["backfill", "organic"]
+
+  - name: stg_onboarding_email_test
+    columns:
+      - name: member_id
+        data_tests: [unique, not_null]
+      - name: variant
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["control", "new_email"]
